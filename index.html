@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC"-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+	<meta content="utf-8" http-equiv="encoding">
+	<title>AutoCAD 360 Web Dashboard</title>
+	
+	<!-- Style -->
+    <link type="text/css" rel="stylesheet" href="style/tipsy.css"></link>
+    <link type="text/css" rel="stylesheet" href="style/viz.css"></link>
+
+
+    <!-- Scripts -->
+    <script src="scripts/jquery-1.6.2.min.js" type="text/javascript"></script>
+    <script src="scripts/d3.min.js" type="text/javascript"></script>
+    <script src="scripts/jquery.tipsy.js" type="text/javascript"></script>
+    <script src="datasets/dataset-web.js" type="text/javascript"></script>
+    <script src="datasets/dataset-mobile.js" type="text/javascript" ></script>
+    <script src="scripts/viualization.js" type="text/javascript"></script>  
+
+</head>
+
+<body>
+		<div id="header">
+			<h1>AutoCAD 360 - Get Satisfaction Dashboard</h1>
+		</div>
+		<div class="wrapper">
+		    <p>User Feedback posts from the Get Satisfaction forum for AutoCAD 360 are displayed as blocks by date below.</p>
+		    <p><strong>Hover</strong> over blocks for details. <strong>Click</strong> to isolate category.</p>
+	  </div>
+	  <div id="container">
+	  	<h3 class-"chartTitle">ACAD 360 <strong>Web</strong> - Get Satisfaction Dashboard</h3>
+	  	<div id="webContainer">
+		  	<div id="loadbar"><img  src="ajax-loader.gif"><p>Updating from Get Satisfaction...</p></div>
+		</div>
+		<hr>
+		<h3 class-"chartTitle">ACAD 360 <strong>Mobile</strong> - Get Satisfaction Dashboard</h3>
+	  	<div id="mobileContainer">
+	  </div>
+	  <div id="footer"><h5>Autodesk Inc.</h5></div>
+</body>
+</html>

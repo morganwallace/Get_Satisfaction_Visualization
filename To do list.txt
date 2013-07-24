@@ -1,0 +1,9 @@
+To do list
+
+-make readme
+-add to github
+-draw both graphs, you just have to scroll.
+-enable the mobile version to get api updates
+-show status as slash through
+-add labels for mobile and web
+-Make word bubbles.

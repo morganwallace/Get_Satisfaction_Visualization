@@ -1,0 +1,6 @@
+Completed To Dos
+
+-popups go left and right.
+-update live data label
+-Get the click event working again
+-populate list of the 10 most common issues.
