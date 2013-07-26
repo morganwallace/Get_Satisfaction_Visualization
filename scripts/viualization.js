@@ -19,7 +19,7 @@ function viz(dataset,datasetType,platform){
 	var totalIdeas = 0;
 	var totalPraise = 0
 
-	console.log(dataset);
+	// console.log(dataset);
 
 
 	//SVG variables
@@ -53,7 +53,7 @@ function viz(dataset,datasetType,platform){
 	var fullMaxDate= new Date(d3.max(dataset, function(d) { 
 	 	return long_format.parse(d.last_active_at.slice(0,19)); }))
 
-	 console.log("min date is: " + shortFormat(minDate) +". And max date is: "+shortFormat(maxDate));
+	 // console.log("min date is: " + shortFormat(minDate) +". And max date is: "+shortFormat(maxDate));
 
 	//X Scale
 	var xScale = d3.time.scale()
@@ -315,7 +315,6 @@ function viz(dataset,datasetType,platform){
 		problemsList.append('li')
 			.attr("id",function(){
 				newid=meTooSorted[i].id+platform;
-				console.log(newid)
 				return newid})
 			.html(meTooSorted[i].subject+" - <strong>"+meTooSorted[i].me_too_count+"</strong> people feel this way.")
 		
@@ -344,26 +343,37 @@ $(document).ready(function(){
 		);
 
 		$('.block').click( function () {
-				target = $(this).attr('class');
-				$('.block').each(function(i, val){ 
-					if ( val.className.animVal !== target )
-					{ 
-						$(val).fadeTo(200, 0.1);
-					}
-					else 
-					{
+				if($(this).attr("highlighted")=='true'){
+					//unhide if clicked while already hightlighted
+					$('rect').each(function(i, val){ 
 						$(val).fadeTo(200, 1);
-					}
-				})
+						$(val).attr("highlighted",false);
+					})
+				}
+				else{
+					target = $(this).attr('class');
+					$('.block').each(function(i, val){ 
+						if ( val.className.animVal !== target )
+						{ 
+							$(val).fadeTo(200, 0.1);
+						}
+						else 
+						{
+							$(val).fadeTo(200, 1);
+							$(val).attr("highlighted",true)
+						}
+					})
+				}
 		})
 
-		//UnFade all on 
+		//UnFade all on SVG click
 		 $('svg').click(function(){
 		 	if (event.target == this){
-		 		console.log("something");
 			 	$('rect').each(function(i, val){ 
 					$(val).fadeTo(200, 1);
-			 })}
+					$(val).attr("highlighted",false);
+				})
+			}
 		});
 	}
 
@@ -377,13 +387,12 @@ $(document).ready(function(){
 	var lastMobileDatasetDate = d3.max(mobiledataset, function(d) { 
 		 	return long_format.parse(d.last_active_at.slice(0,19)); })
 	lastMobileDatasetDate = (lastMobileDatasetDate.getTime()/1000)+1
-	console.log(lastMobileDatasetDate)
-	// console.log(weekAgo);
 	
 
 	//Live updating data.
 	var response=" ";
-
+	var liveMobileDataset=[]
+	var liveWebDataset=[]
 	var liveUpdate = function(platform){
 		// $("#container").html()
 		var pageNo = 1;
@@ -401,18 +410,24 @@ $(document).ready(function(){
 			}
 			// console.log(product,"-",lastDate)
 			var query = "https://api.getsatisfaction.com/products/"+product+"/topics.json?active_since="+lastDate+"&limit=30&page="+pageNo+"&callback=?";
-			console.log(query)
 			$.getJSON(query,function ( data ) {
 					response=data["data"][0];
 					if (response != undefined){
-						// console.log(response)
-						liveDataset= liveDataset.concat(data['data']);
+						if (platform == 'mobile'){
+							liveMobileDataset = liveDataset.concat(data['data']);
+						}
+						if (platform == "web"){liveWebDataset = liveDataset.concat(data['data']);}
 						pageNo++;
 						makeQuery(platform);
 					}
 					else{
 						$("#loadbar").fadeOut(300,function(){
-							viz(liveDataset,'live',platform)
+							if( platform=='mobile'){
+								viz(liveMobileDataset,'live',platform)}
+							else if(platform=='web'){
+								viz(liveWebDataset,'live',platform)
+								bubbleViz(liveWebDataset,platform)
+							}
 						})
 					}
 			});
@@ -422,6 +437,8 @@ $(document).ready(function(){
 	liveUpdate("web");
 	liveUpdate("mobile")
  	
+
+
 
 
 })//end $(document).ready function
